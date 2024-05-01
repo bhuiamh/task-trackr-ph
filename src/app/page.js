@@ -1,9 +1,10 @@
-import Image from "next/image";
+import Navbar from "./components/common/Navbar";
 
 export default function Home() {
   return (
-    <main className="h-screen flex items-center justify-center">
-      <h1 className="text-center text-8xl font-extrabold text-pink-500">Hello Task Trackr Ph</h1>
+    <main className="text-white pt-20">
+      hello
+      {/* <h1 className="text-center text-8xl font-extrabold text-pink-500">Hello Task Trackr Ph</h1> */}
     </main>
   );
 }

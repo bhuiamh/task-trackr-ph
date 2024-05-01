@@ -16,14 +16,23 @@
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+/* body {
+  background-image: url("/background.jpg");
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+  min-height: 100vh; 
+} */
+
+
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.124);
 }
 
 @layer utilities {
