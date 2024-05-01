@@ -1,11 +1,12 @@
-import React from 'react';
+import LoginForm from "./LoginForm";
 
 const LoginPage = () => {
-    return (
-        <div className='pt-20'>
-            Hello Log in page
-        </div>
-    );
+  return (
+    <div className="h-screen flex items-center justify-center">
+      {/* No need for a nested `div` with `w-full` */}
+      <LoginForm />
+    </div>
+  );
 };
 
 export default LoginPage;

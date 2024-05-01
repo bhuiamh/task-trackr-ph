@@ -48,7 +48,7 @@ const Navbar = () => {
           width={100}
         />
 
-        <div className="flex items-end w-40 justify-center">
+        <div className="flex items-end w-40 justify-center text-white">
           <span className="text-3xl font-bold">{hour}:</span>
           <span className="text-3xl font-bold">{minute}</span>
           <span className="text-base font-bold">:{second}</span>
