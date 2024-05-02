@@ -17,9 +17,9 @@ export default function Home() {
     }
   }, [router]);
   return (
-    <main className="z-20 container mx-auto pt-20 px-4 lg:px-0">
+    <main className="z-20 container mx-auto pt-24 px-4 lg:px-0">
       <TopSideBar />
-      <div>
+      <div className="mt-6 md:mt-10">
         <TaskTable />
       </div>
     </main>

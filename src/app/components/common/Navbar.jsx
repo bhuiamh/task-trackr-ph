@@ -50,7 +50,7 @@ const Navbar = () => {
     if (defineUser) setUserPresent(defineUser);
   }, []);
   return (
-    <div className="fixed w-full h-20 flex items-center z-50">
+    <div className="fixed w-full h-20 flex items-center z-50 backdrop-blur-md bg-black/40">
       <div
         ref={menuRef}
         className="container mx-auto flex items-center justify-between relative px-4 lg:px-0"
