@@ -1,8 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import TopSideBar from "./components/common/TopSideBar";
 import TaskTable from "./components/common/TaskTable";
+import TopSideBar from "./components/common/TopSideBar";
 
 export default function Home() {
   const router = useRouter();
@@ -17,9 +17,11 @@ export default function Home() {
     }
   }, [router]);
   return (
-    <main className="container mx-auto pt-20 px-4 lg:px-0">
+    <main className="z-20 container mx-auto pt-20 px-4 lg:px-0">
       <TopSideBar />
-      <TaskTable />
+      <div>
+        <TaskTable />
+      </div>
     </main>
   );
 }

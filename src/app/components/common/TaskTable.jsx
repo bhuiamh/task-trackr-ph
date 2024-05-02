@@ -1,84 +1,14 @@
-import {SyncOutlined, CheckCircleOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  CheckCircleOutlined,
+  SearchOutlined,
+  SyncOutlined,
+} from "@ant-design/icons";
 
 import { Button, Input, Space, Table } from "antd";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
+import Swal from "sweetalert2";
 import EditTask from "./EditTask";
-
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    assignee: ["John Brown"],
-    member: 32,
-    status: "active",
-    priority: "High",
-    deadline: "28 May 2023, 4:00",
-  },
-  {
-    key: "2",
-    name: "Joe Black",
-    assignee: ["Joe Black"],
-    member: 42,
-    status: "active",
-    priority: "Medium",
-    deadline: "28 May 2023, 3:00",
-  },
-  {
-    key: "3",
-    name: "Jim Green",
-    assignee: ["Jim Green"],
-    member: 32,
-    status: "active",
-    priority: "Low",
-    deadline: "28 May 2023, 5:00",
-  },
-  {
-    key: "4",
-    name: "Jim Red",
-    assignee: ["Jim Red"],
-    member: 32,
-    status: "active",
-    priority: "High",
-    deadline: "25 May 2023, 4:00",
-  },
-  {
-    key: "5",
-    name: "John Brown",
-    assignee: ["John Brown"],
-    member: 32,
-    status: "active",
-    priority: "Medium",
-    deadline: "24 May 2023, 4:00",
-  },
-  {
-    key: "6",
-    name: "Joe Black",
-    assignee: ["Joe Black"],
-    member: 42,
-    status: "active",
-    priority: "Low",
-    deadline: "23 May 2023, 4:00",
-  },
-  {
-    key: "7",
-    name: "Jim Green",
-    assignee: ["Jim Green"],
-    member: 32,
-    status: "finished",
-    priority: "High",
-    deadline: "22 May 2023, 4:00",
-  },
-  {
-    key: "8",
-    name: "Jim Red",
-    assignee: ["Jim Red", "Jim Bed"],
-    member: 32,
-    status: "active",
-    priority: "Low",
-    deadline: "21 May 2023, 4:00",
-  },
-];
 
 const TaskTable = () => {
   const [searchText, setSearchText] = useState("");
@@ -86,6 +16,25 @@ const TaskTable = () => {
   const searchInput = useRef(null);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editedRow, setEditedRow] = useState(null); // Added state for edited row
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/task.json");
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -250,24 +199,22 @@ const TaskTable = () => {
       sortDirections: ["ascend", "descend"],
     },
     {
-        title: "Action",
-        key: "action",
-        render: (text, record) => {
-          // Conditionally render the "Edit" button based on the status
-          if (record.status === "finished") {
-            return (
+      title: "Action",
+      key: "action",
+      render: (text, record) => {
+        // Conditionally render the "Edit" button based on the status
+        if (record.status === "finished") {
+          return <Button onClick={() => handleDelete(record)}>Delete</Button>;
+        } else {
+          return (
+            <Space size="middle">
+              <Button onClick={() => handleEdit(record)}>Edit</Button>
               <Button onClick={() => handleDelete(record)}>Delete</Button>
-            );
-          } else {
-            return (
-              <Space size="middle">
-                <Button onClick={() => handleEdit(record)}>Edit</Button>
-                <Button onClick={() => handleDelete(record)}>Delete</Button>
-              </Space>
-            );
-          }
-        },
+            </Space>
+          );
+        }
       },
+    },
   ];
   const handleEdit = (record) => {
     setEditedRow(record);
@@ -275,11 +222,30 @@ const TaskTable = () => {
   };
 
   const handleDelete = (record) => {
-    console.log("Delete", record);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          icon: "success",
+          text: "Your task has been deleted.",
+          showConfirmButton: false,
+          timer: 1500,
+
+        });
+      }
+    });
   };
 
   return (
-    <div>
+    <div className="z-20">
       <Table columns={columns} dataSource={data} />
       <EditTask
         visible={editModalVisible}

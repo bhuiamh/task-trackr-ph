@@ -2,9 +2,9 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import CommonButton from "./CommonButton";
 import { FaUserAlt } from "react-icons/fa";
-
+import CommonButton from "./CommonButton";
+import ProfileSidebar from "./ProfileSidebar";
 
 const Navbar = () => {
   const router = useRouter();
@@ -50,7 +50,7 @@ const Navbar = () => {
     if (defineUser) setUserPresent(defineUser);
   }, []);
   return (
-    <div className="fixed w-full h-20 flex items-center">
+    <div className="fixed w-full h-20 flex items-center z-50">
       <div
         ref={menuRef}
         className="container mx-auto flex items-center justify-between relative px-4 lg:px-0"
@@ -74,7 +74,10 @@ const Navbar = () => {
             onMouseLeave={() => setIsProfileMenuOpen(false)}
             onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
             className="h-10 w-10 rounded-full border-2 border-primary flex items-center justify-center cursor-pointer"
-          > <FaUserAlt className="text-white" /></div>
+          >
+            {" "}
+            <FaUserAlt className="text-white" />
+          </div>
         ) : (
           <div className="w-24">
             {" "}
@@ -85,9 +88,9 @@ const Navbar = () => {
           <div
             onMouseEnter={() => setIsProfileMenuOpen(true)}
             onMouseLeave={() => setIsProfileMenuOpen(false)}
-            className="absolute top-10 right-0 pt-10"
+            className="z-50 absolute top-10 right-0 pt-10"
           >
-            <div className="h-96 w-60 bg-white"></div>
+            <ProfileSidebar />
           </div>
         )}
       </div>
