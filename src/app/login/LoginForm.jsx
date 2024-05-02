@@ -75,13 +75,12 @@ const LoginForm = () => {
           <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-40">
             <div className="bg-white p-6 md:p-10 rounded-md">
               <h2 className="text-lg font-bold mb-4">Login Credentials</h2>
-              <h1>For Student</h1>
               <p>Email: user@tasktrackr.com</p>
               <p>Password: tasktrackr</p>
 
               <CommonButton
                 onClick={toggleModal}
-                className="mt-6 bg-primary text-white px-4 py-2 rounded-md shadow-md hover:bg-green-900"
+               
               >
                 Close
               </CommonButton>

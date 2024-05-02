@@ -1,7 +1,9 @@
-import { SearchOutlined } from "@ant-design/icons";
+import {SyncOutlined, CheckCircleOutlined, SearchOutlined } from "@ant-design/icons";
+
 import { Button, Input, Space, Table } from "antd";
 import { useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
+import EditTask from "./EditTask";
 
 const data = [
   {
@@ -9,7 +11,7 @@ const data = [
     name: "John Brown",
     assignee: ["John Brown"],
     member: 32,
-    status: "true",
+    status: "active",
     priority: "High",
     deadline: "28 May 2023, 4:00",
   },
@@ -18,7 +20,7 @@ const data = [
     name: "Joe Black",
     assignee: ["Joe Black"],
     member: 42,
-    status: "true",
+    status: "active",
     priority: "Medium",
     deadline: "28 May 2023, 3:00",
   },
@@ -27,7 +29,7 @@ const data = [
     name: "Jim Green",
     assignee: ["Jim Green"],
     member: 32,
-    status: "true",
+    status: "active",
     priority: "Low",
     deadline: "28 May 2023, 5:00",
   },
@@ -36,7 +38,7 @@ const data = [
     name: "Jim Red",
     assignee: ["Jim Red"],
     member: 32,
-    status: "true",
+    status: "active",
     priority: "High",
     deadline: "25 May 2023, 4:00",
   },
@@ -45,7 +47,7 @@ const data = [
     name: "John Brown",
     assignee: ["John Brown"],
     member: 32,
-    status: "true",
+    status: "active",
     priority: "Medium",
     deadline: "24 May 2023, 4:00",
   },
@@ -54,7 +56,7 @@ const data = [
     name: "Joe Black",
     assignee: ["Joe Black"],
     member: 42,
-    status: "true",
+    status: "active",
     priority: "Low",
     deadline: "23 May 2023, 4:00",
   },
@@ -63,7 +65,7 @@ const data = [
     name: "Jim Green",
     assignee: ["Jim Green"],
     member: 32,
-    status: "true",
+    status: "finished",
     priority: "High",
     deadline: "22 May 2023, 4:00",
   },
@@ -72,7 +74,7 @@ const data = [
     name: "Jim Red",
     assignee: ["Jim Red", "Jim Bed"],
     member: 32,
-    status: "true",
+    status: "active",
     priority: "Low",
     deadline: "21 May 2023, 4:00",
   },
@@ -82,6 +84,8 @@ const TaskTable = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editedRow, setEditedRow] = useState(null); // Added state for edited row
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -179,13 +183,24 @@ const TaskTable = () => {
       title: "Title",
       dataIndex: "name",
       key: "name",
-      width: "30%",
       ...getColumnSearchProps("name"),
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      sorter: (a, b) => a.status.localeCompare(b.status),
+      sortDirections: ["descend", "ascend"],
+      render: (status) => {
+        // Define icons based on status
+        const statusIcons = {
+          active: <SyncOutlined style={{ color: "blue" }} />,
+          finished: <CheckCircleOutlined style={{ color: "green" }} />,
+        };
+
+        // Render the corresponding icon based on status
+        return statusIcons[status] || status;
+      },
     },
     {
       title: "Priority",
@@ -228,15 +243,51 @@ const TaskTable = () => {
       sortDirections: ["ascend", "descend"],
     },
     {
-        title: "Deadline",
-        dataIndex: "deadline",
-        key: "deadline",
-        sorter: (a, b) => new Date(a.deadline) - new Date(b.deadline),
-        sortDirections: ["ascend", "descend"],
+      title: "Deadline",
+      dataIndex: "deadline",
+      key: "deadline",
+      sorter: (a, b) => new Date(a.deadline) - new Date(b.deadline),
+      sortDirections: ["ascend", "descend"],
+    },
+    {
+        title: "Action",
+        key: "action",
+        render: (text, record) => {
+          // Conditionally render the "Edit" button based on the status
+          if (record.status === "finished") {
+            return (
+              <Button onClick={() => handleDelete(record)}>Delete</Button>
+            );
+          } else {
+            return (
+              <Space size="middle">
+                <Button onClick={() => handleEdit(record)}>Edit</Button>
+                <Button onClick={() => handleDelete(record)}>Delete</Button>
+              </Space>
+            );
+          }
+        },
       },
   ];
+  const handleEdit = (record) => {
+    setEditedRow(record);
+    setEditModalVisible(true);
+  };
 
-  return <Table columns={columns} dataSource={data} />;
+  const handleDelete = (record) => {
+    console.log("Delete", record);
+  };
+
+  return (
+    <div>
+      <Table columns={columns} dataSource={data} />
+      <EditTask
+        visible={editModalVisible}
+        onClose={() => setEditModalVisible(false)}
+        record={editedRow}
+      />
+    </div>
+  );
 };
 
 export default TaskTable;
