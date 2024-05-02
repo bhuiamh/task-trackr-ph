@@ -18,7 +18,7 @@ const InputField = ({
       placeholder={placeholder}
       value={value}
       onChange={onChange}
-      className={`bg-transparent w-full px-3.5 py-2 border-b-2 focus:outline-none border-white focus:border-b-2 focus:border-primary text-white ${className}`}
+      className={`bg-transparent w-full px-2 py-o md:py-1 md:px-2 lg:px-3 border-b-2 placeholder:text-xs lg:placeholder:text-sm focus:outline-none border-white focus:border-b-2 focus:border-primary text-white ${className}`}
       required={required}
     />
   );

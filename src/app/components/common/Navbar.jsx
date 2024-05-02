@@ -3,6 +3,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import CommonButton from "./CommonButton";
+import { FaUserAlt } from "react-icons/fa";
+
 
 const Navbar = () => {
   const router = useRouter();
@@ -71,8 +73,8 @@ const Navbar = () => {
             onMouseEnter={() => setIsProfileMenuOpen(true)}
             onMouseLeave={() => setIsProfileMenuOpen(false)}
             onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-            className="h-10 w-10 rounded-full bg-red-500"
-          ></div>
+            className="h-10 w-10 rounded-full border-2 border-primary flex items-center justify-center cursor-pointer"
+          > <FaUserAlt className="text-white" /></div>
         ) : (
           <div className="w-24">
             {" "}
